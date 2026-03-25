@@ -1,0 +1,474 @@
+/* ============================================================
+   PROMPT VAULT — style.css
+   Light mode with clean system fonts
+   ============================================================ */
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --bg:         #f5f5f7;
+  --surface:    #ffffff;
+  --surface-2:  #f0f0f3;
+  --border:     #d8d8e0;
+  --accent:     #3b5bdb;
+  --accent-dim: rgba(59,91,219,.1);
+  --accent-glow:rgba(59,91,219,.2);
+  --text:       #1a1a2e;
+  --muted:      #6b7280;
+  --danger:     #dc2626;
+  --success:    #16a34a;
+  --radius:     10px;
+  --font-ui:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --transition: .2s ease;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+
+
+}
+
+/* ── Page wrapper ───────────────────────────────────────────── */
+.page-wrapper,
+body > div,
+body > form {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* ── Headings ───────────────────────────────────────────────── */
+h1, h2, h3 {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 28px;
+  position: relative;
+  display: inline-block;
+}
+h2::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 40%;
+  background: var(--accent);
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+h3 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+p { color: var(--muted); margin-bottom: 12px; }
+
+small {
+  font-size: .8rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Welcome line ───────────────────────────────────────────── */
+body > h2:first-of-type {
+  font-size: 1.6rem;
+  display: block;
+  max-width: 700px;
+  margin: 60px auto 4px;
+  padding: 0 20px;
+}
+body > h2:first-of-type::after { display: none; }
+
+/* ── Cards / bordered divs ──────────────────────────────────── */
+div[style*="border"] {
+  /* override inline styles */
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  background: var(--surface) !important;
+  margin: 12px 0 !important;
+  padding: 18px 20px !important;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+div[style*="border"]:hover {
+  border-color: var(--accent) !important;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+div[style*="border"] strong {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* ── Generic container card ─────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity var(--transition);
+}
+a:hover { opacity: .75; }
+
+/* Dashboard nav links */
+body > h3 + a,
+body > a {
+  display: inline-block;
+  margin: 6px 8px 6px 0;
+  padding: 9px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: .88rem;
+  background: var(--surface);
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+body > h3 + a:hover,
+body > a:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Logout link */
+body > br + br + a,
+a[href="logout.php"] {
+  color: var(--danger);
+  border-color: rgba(224,82,82,.3) !important;
+  background: rgba(224,82,82,.07) !important;
+}
+a[href="logout.php"]:hover {
+  border-color: var(--danger) !important;
+  background: rgba(224,82,82,.15) !important;
+  color: var(--danger);
+}
+
+/* "+ Add Category" link */
+a[href="add_category.php"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: var(--accent);
+  color: #0d0d0f !important;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: .88rem;
+  transition: filter var(--transition);
+  border: none !important;
+}
+a[href="add_category.php"]:hover { filter: brightness(1.12); opacity: 1; }
+
+/* Inline edit | delete links */
+a[href*="edit_"],
+a[href*="delete_"] {
+  font-size: .78rem;
+  font-family: var(--font-mono);
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--muted);
+  margin-right: 4px;
+}
+a[href*="edit_"]:hover  { border-color: var(--accent); color: var(--accent); opacity: 1; }
+a[href*="delete_"]      { border-color: rgba(224,82,82,.3); color: var(--danger); }
+a[href*="delete_"]:hover{ border-color: var(--danger); background: rgba(224,82,82,.12); opacity: 1; }
+
+/* ── Forms ──────────────────────────────────────────────────── */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: -8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: .9rem;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+input::placeholder,
+textarea::placeholder { color: var(--muted); opacity: 1; }
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b80' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+select option { background: var(--surface); }
+
+/* ── Buttons ────────────────────────────────────────────────── */
+button[type="submit"],
+button {
+  align-self: flex-start;
+  padding: 11px 28px;
+  background: var(--accent);
+  color: #0d0d0f;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .02em;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: filter var(--transition), transform var(--transition);
+}
+button:hover  { filter: brightness(1.12); transform: translateY(-1px); }
+button:active { transform: translateY(0); filter: brightness(.95); }
+
+/* Filter button (inline in GET form) */
+form[method="GET"] button {
+  padding: 10px 20px;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+form[method="GET"] button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  filter: none;
+}
+
+/* ── Filter / search bar ────────────────────────────────────── */
+form[method="GET"] {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+form[method="GET"] select { flex: 1; }
+
+/* ── Prompt card h3 + p ─────────────────────────────────────── */
+div[style*="border"] h3 {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 10px 0 6px;
+}
+div[style*="border"] p {
+  font-size: .9rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ── Success / error feedback (echoed strings) ──────────────── */
+body > p,
+body > div > p {
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  font-size: .88rem;
+  font-weight: 600;
+  background: rgba(82,201,126,.12);
+  border: 1px solid rgba(82,201,126,.3);
+  color: var(--success);
+  margin-bottom: 16px;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Page fade-in ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+body { animation: fadeUp .35s ease both; }
+
+/* ── Table (Top Contributors) ───────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  margin-bottom: 24px;
+}
+
+table th,
+table td {
+  padding: 13px 20px;
+  text-align: left;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+table thead tr {
+  background: var(--surface-2);
+}
+
+table th {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+}
+
+table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+table tbody tr {
+  transition: background var(--transition);
+}
+
+table tbody tr:hover {
+  background: var(--accent-dim);
+}
+
+table td {
+  font-size: .92rem;
+  color: var(--text);
+}
+
+table td:last-child {
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* ── Back link ──────────────────────────────────────────────── */
+a[href="dashboard.php"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: .88rem;
+  font-weight: 600;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: color var(--transition), border-color var(--transition);
+}
+a[href="dashboard.php"]:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+/* ── Center everything ──────────────────────────────────────── */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+body > * {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* override old margin-based centering */
+.page-wrapper,
+body > div,
+body > form {
+  margin: 0 0 24px 0;
+  padding: 0;
+  max-width: 700px;
+  width: 100%;
+}
+
+body > h2 {
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+body > h2:first-of-type {
+  margin: 0 0 4px 0;
+  padding: 0;
+  font-size: 1.6rem;
+}
+
+body > h3 {
+  margin-bottom: 12px;
+}
+
+body > br { display: none; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  body { padding: 30px 16px; }
+  form { padding: 22px 18px; }
+  form[method="GET"] { flex-direction: column; }
+  h2 { font-size: 1.5rem; }
+  table th, table td { padding: 10px 14px; }
+}
