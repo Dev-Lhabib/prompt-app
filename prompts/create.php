@@ -1,14 +1,14 @@
 <?php
 session_start();
-require "../db.php";
-
+require "../config/db.php";
 
 if (!isset($_SESSION['user_id'])){
-  header("Location: login.php");
+  header("Location: ../auth/login.php");
   exit();
 }
 
 $success = "";
+$error = "";
 
 if (isset($_POST['add_prompt'])){
   $title = $_POST['title'];
@@ -17,7 +17,7 @@ if (isset($_POST['add_prompt'])){
   $user_id = $_SESSION['user_id'];
 
   $check = $pdo->prepare("SELECT id FROM prompts WHERE title = ?");
-  $check-> execute(['$title']);
+  $check->execute([$title]);
 
   if ($check->fetch()){
     $error = "A prompt with this title already exists. Please choose a different title.";
@@ -27,39 +27,35 @@ if (isset($_POST['add_prompt'])){
     $stmt->execute([$title, $content, $user_id, $category_id]);
     $success = "Prompt added successfully!";
   }
-
 }
 
 $stmt = $pdo->query("SELECT * FROM categories");
 $categories = $stmt->fetchAll();
 ?>
-<link rel="stylesheet" href="style.css">
-<h2>Add prompt</h2>
-<a href="dashboard.php">⬅ Back</a>
+<link rel="stylesheet" href="../assets/style.css">
+<h2>Add Prompt</h2>
+<a href="index.php">⬅ Back</a>
 
 <?php if (!empty($error)): ?>
-    <p style="color: red;"><?= $error ?></p>  
+    <p style="color: red;"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 
 <?php if ($success): ?>
-  <p><?= $success ?></p>
+  <p><?= htmlspecialchars($success) ?></p>
 <?php endif; ?>
+
 <div>
   <form method="POST">
       <input type="text" name="title" placeholder="Title" required>
-
         <textarea name="content" placeholder="Write your prompt..." required></textarea>
-
         <select name="category_id" required>
             <option value="">Select Category</option>
             <?php foreach ($categories as $cat): ?>
                 <option value="<?= $cat['id'] ?>">
-                    <?= $cat['name'] ?>
+                    <?= htmlspecialchars($cat['name']) ?>
                 </option>
             <?php endforeach; ?>
         </select><br>
       <button type="submit" name="add_prompt">Add Prompt</button>
   </form>
 </div>
-
-

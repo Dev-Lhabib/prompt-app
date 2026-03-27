@@ -1,9 +1,9 @@
 <?php
 session_start();
-require "../db.php";
+require "../config/db.php";
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
-    header("Location: dashboard.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 
@@ -17,7 +17,7 @@ $stmt = $pdo->query("
 
 $users = $stmt->fetchAll();
 ?>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../assets/style.css">
 
 <h2>Top Contributors</h2>
 <br>
@@ -27,7 +27,6 @@ $users = $stmt->fetchAll();
         <th>Username</th>
         <th>Prompts Count</th>
     </tr>
-
     <?php foreach ($users as $user): ?>
         <tr>
             <td><?= htmlspecialchars($user['username']); ?></td>

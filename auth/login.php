@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../db.php';
+require '../config/db.php';
 
 $error = '';
 
@@ -17,17 +17,21 @@ if (isset($_POST['login'])){
     $_SESSION['role'] = $user['role'];
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
-    
-    header("Location: dashboard.php");
+
+    if ($user['role'] === 'admin') {
+      header("Location: ../admin/dashboard.php");
+    } else {
+      header("Location: ../prompts/index.php");
+    }
     exit();
-    
   } else {
     $error = "Invalid email or password!";
   }
 }
 ?>
-<link rel="stylesheet" href="style.css">
 
+
+<link rel="stylesheet" href="../assets/style.css">
 <h3>Login</h3>
 <div>
   <?php if ($error): ?>

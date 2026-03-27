@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../assets/style.css">
 
 <h3>Créer votre compte</h3>
 <div>
@@ -19,7 +19,7 @@
 
 <?php
 session_start();
-require '../db.php';
+require '../config/db.php';
 
 if (isset($_POST['register'])){
   $username = $_POST['username'];
@@ -28,11 +28,9 @@ if (isset($_POST['register'])){
 
   $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-  $sql = "insert into users (username, email, password) values(?, ?, ?)";  
+  $sql = "insert into users (username, email, password) values(?, ?, ?)";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([$username, $email, $hashedPassword]);
 
   echo "User registered successfully!";
-
 }
-?>

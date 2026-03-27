@@ -1,17 +1,21 @@
 <?php
 session_start();
-require "../db.php";
+require "../config/db.php";
 
 if (!isset($_SESSION['user_id'])){
-  header("Location: login.php");
-  exit();  
+  header("Location: ../auth/login.php");
+  exit();
 }
 
-$sql = "SELECT prompts.*, users.username, categories.name AS category_name 
+if ($_SESSION['role'] === 'admin') {
+  header("Location: ../admin/dashboard.php");
+  exit();
+}
+
+$sql = "SELECT prompts.*, users.username, categories.name AS category_name
 FROM prompts
 INNER JOIN users ON prompts.user_id = users.id
 INNER JOIN categories ON prompts.category_id = categories.id";
-
 
 $params = [];
 
@@ -26,20 +30,20 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $prompts = $stmt->fetchAll();
 
-$stmt = $pdo->query("SELECT * FROM  categories ORDER BY name ASC");
+$stmt = $pdo->query("SELECT * FROM categories ORDER BY name ASC");
 $categories = $stmt->fetchAll();
-
 ?>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../assets/style.css">
 
-<h2>All prompts</h2>
+<h2>All Prompts</h2>
 
 <?php if (isset($_SESSION['success'])): ?>
     <p><?= $_SESSION['success'] ?></p>
     <?php unset($_SESSION['success']); ?>
 <?php endif; ?>
 
-<a href="dashboard.php">⬅ Back</a>
+<a href="create.php">+ Add Prompt</a>
+<a href="../auth/logout.php">Logout</a>
 
 <form method="GET">
     <?php $selectedCategory = $_GET['category_id'] ?? ''; ?>
@@ -48,31 +52,22 @@ $categories = $stmt->fetchAll();
       <?php foreach ($categories as $cat): ?>
         <option value="<?= $cat['id']; ?>"
         <?= ($selectedCategory == $cat['id']) ? 'selected' : ''; ?>>
-
         <?= htmlspecialchars($cat['name']); ?>
         </option>
-      <?php endforeach;?>
+      <?php endforeach; ?>
     </select>
     <button type="submit">Filter</button>
 </form>
 
 <?php foreach ($prompts as $prompt): ?>
   <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-    <a href="edit_prompt.php?id=<?= $prompt['id'] ?>">Edit</a> |
-    <a href="delete_prompt.php?id=<?= $prompt['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
-    <h3><?= $prompt['title']?></h3>
-    <p><?= $prompt['content'] ?></p>
+    <a href="edit.php?id=<?= $prompt['id'] ?>">Edit</a> |
+    <a href="delete.php?id=<?= $prompt['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+    <h3><?= htmlspecialchars($prompt['title']) ?></h3>
+    <p><?= htmlspecialchars($prompt['content']) ?></p>
     <small>
-      By <?= $prompt['username'] ?> |
-      Category: <?= $prompt['category_name'] ?>
+      By <?= htmlspecialchars($prompt['username']) ?> |
+      Category: <?= htmlspecialchars($prompt['category_name']) ?>
     </small>
   </div>
 <?php endforeach; ?>
-
-
-
-
-
-
-
-
