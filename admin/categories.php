@@ -31,9 +31,16 @@ if (isset($_POST['update'])) {
 // Handle Delete
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
-    $stmt->execute([$id]);
-    $_SESSION['success'] = "Category deleted successfully!";
+    // Check if category has prompts
+    $check = $pdo->prepare("SELECT COUNT(*) FROM prompts WHERE category_id = ?");
+    $check->execute([$id]);
+    if ($check->fetchColumn() > 0) {
+        $_SESSION['error'] = "Cannot delete: this category still has prompts.";
+    } else {
+        $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
+        $stmt->execute([$id]);
+        $_SESSION['success'] = "Category deleted successfully!";
+    }
     header("Location: categories.php");
     exit();
 }
@@ -53,8 +60,12 @@ $categories = $stmt->fetchAll();
 <h2>Manage Categories</h2>
 
 <?php if (isset($_SESSION['success'])): ?>
-    <p><?= $_SESSION['success'] ?></p>
+    <p style="color:green;"><?= $_SESSION['success'] ?></p>
     <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+<?php if (isset($_SESSION['error'])): ?>
+    <p style="color:red;"><?= $_SESSION['error'] ?></p>
+    <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
 
 <a href="dashboard.php">⬅ Back</a>

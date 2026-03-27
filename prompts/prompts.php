@@ -38,8 +38,12 @@ $categories = $stmt->fetchAll();
 <h2>All Prompts</h2>
 
 <?php if (isset($_SESSION['success'])): ?>
-    <p><?= $_SESSION['success'] ?></p>
+    <p style="color:green;"><?= $_SESSION['success'] ?></p>
     <?php unset($_SESSION['success']); ?>
+<?php endif; ?>
+<?php if (isset($_SESSION['error'])): ?>
+    <p style="color:red;"><?= $_SESSION['error'] ?></p>
+    <?php unset($_SESSION['error']); ?>
 <?php endif; ?>
 
 <a href="create.php">+ Add Prompt</a>
@@ -61,8 +65,10 @@ $categories = $stmt->fetchAll();
 
 <?php foreach ($prompts as $prompt): ?>
   <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-    <a href="edit.php?id=<?= $prompt['id'] ?>">Edit</a> |
-    <a href="delete.php?id=<?= $prompt['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+    <?php if ($prompt['user_id'] == $_SESSION['user_id']): ?>
+      <a href="edit.php?id=<?= $prompt['id'] ?>">Edit</a> |
+      <a href="delete.php?id=<?= $prompt['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+    <?php endif; ?>
     <h3><?= htmlspecialchars($prompt['title']) ?></h3>
     <p><?= htmlspecialchars($prompt['content']) ?></p>
     <small>

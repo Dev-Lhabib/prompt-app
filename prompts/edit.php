@@ -18,15 +18,25 @@ if (isset($_POST['update'])) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$title, $content, $category_id, $id, $_SESSION['user_id']]);
 
-    $_SESSION['success'] = "Prompt updated successfully!";
-    header("Location: index.php");
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['success'] = "Prompt updated successfully!";
+    } else {
+        $_SESSION['error'] = "Could not update this prompt.";
+    }
+    header("Location: prompts.php");
     exit();
 }
 
-$sql = "SELECT * FROM prompts WHERE id = ?";
+$sql = "SELECT * FROM prompts WHERE id = ? AND user_id = ?";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$id]);
+$stmt->execute([$id, $_SESSION['user_id']]);
 $prompt = $stmt->fetch();
+
+if (!$prompt) {
+    $_SESSION['error'] = "You can only edit your own prompts.";
+    header("Location: prompts.php");
+    exit();
+}
 
 $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
 ?>
